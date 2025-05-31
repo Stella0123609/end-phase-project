@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = {version = "==0.115.2", extras = ["standard"]}
+uvicorn = "==0.32.0"
+sqlalchemy = "==2.0.36"
+ephem = "==4.1.5"
+requests = "==2.32.3"
+pydantic = "==2.9.2"
+python-jose = "==3.3.0"
+passlib = "==1.7.4"
+python-dotenv = "==1.0.1"
+
+[dev-packages]
+alembic = "==1.13.3"
+pytest = "==8.3.3"
+
+[requires]
+python_version = "3.8"
