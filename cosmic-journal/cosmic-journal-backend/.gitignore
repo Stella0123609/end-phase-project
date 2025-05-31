@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+pipenv/
+.venv/  # Added for Pipenv virtual environment
+*.env
+*.env.*
+.envrc
+Pipfile.lock # Added for Pipenv
