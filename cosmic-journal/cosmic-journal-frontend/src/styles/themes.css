@@ -1,0 +1,9 @@
+:root {
+    --primary: #1a1a2e;
+    --secondary: #e6e6e6;
+  }
+  
+  .dark {
+    --primary: #e6e6e6;
+    --secondary: #1a1a2e;
+  }
