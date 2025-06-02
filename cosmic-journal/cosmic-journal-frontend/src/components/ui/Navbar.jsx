@@ -1,19 +1,81 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useAuth } from '../auth/AuthProvider';
 
 function Navbar() {
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
-    <nav className="bg-gray-800 p-4">
-      <div className="flex space-x-4">
-        <Link to="/" className="text-white hover:text-gray-300">Home</Link>
-        <Link to="/login" className="text-white hover:text-gray-300">Login</Link>
-        <Link to="/signup" className="text-white hover:text-gray-300">Signup</Link>
-        <Link to="/journal" className="text-white hover:text-gray-300">Journal</Link>
-        <Link to="/starmap-page" className="text-white hover:text-gray-300">Star Map</Link>
-        <Link to="/dashboard" className="text-white hover:text-gray-300">Dashboard</Link>
-        <Link to="/profile" className="text-white hover:text-gray-300">Profile</Link>
+    <motion.nav
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="fixed top-0 left-0 right-0 bg-gradient-to-r from-cosmic to-black text-starry p-4 shadow-lg z-50"
+    >
+      <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="text-2xl font-bold">
+          <NavLink to="/" className="hover:text-blue-300 transition duration-300">
+            Cosmic Journal
+          </NavLink>
+        </div>
+        <div className="flex items-center space-x-6">
+          {user ? (
+            <>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `hover:text-blue-300 transition duration-300 ${isActive ? 'text-blue-300 font-semibold' : ''}`
+                }
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  `hover:text-blue-300 transition duration-300 ${isActive ? 'text-blue-300 font-semibold' : ''}`
+                }
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
+                to="/starmap-page"
+                className={({ isActive }) =>
+                  `hover:text-blue-300 transition duration-300 ${isActive ? 'text-blue-300 font-semibold' : ''}`
+                }
+              >
+                Star Map
+              </NavLink>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  `hover:text-blue-300 transition duration-300 ${isActive ? 'text-blue-300 font-semibold' : ''}`
+                }
+              >
+                Profile
+              </NavLink>
+            </>
+          ) : (
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                `hover:text-blue-300 transition duration-300 ${isActive ? 'text-blue-300 font-semibold' : ''}`
+              }
+            >
+              Login
+            </NavLink>
+          )}
+        </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
 

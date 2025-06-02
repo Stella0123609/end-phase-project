@@ -1,3 +1,5 @@
 export const validateCoordinates = (latitude, longitude) => {
-  return latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
+  const latValid = latitude >= -90 && latitude <= 90;
+  const lonValid = longitude >= -180 && longitude <= 180;
+  return latValid && lonValid;
 };

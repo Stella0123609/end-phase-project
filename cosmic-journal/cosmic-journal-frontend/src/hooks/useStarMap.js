@@ -1,16 +1,49 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; 
 
-export const useStarMap = (latitude, longitude) => {
+const useStarMap = (latitude, longitude, city = null) => {
+  const { token } = useAuth();
   const [starmap, setStarmap] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchStarmap = async () => {
+    if (!token) {
+      setError('Please log in to fetch the starmap.');
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    try {
+      const params = city ? { city } : { latitude, longitude };
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/starmap/generate`,
+        {
+          params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setStarmap(response.data.star_map);
+    } catch (error) {
+      setError(error.response?.data?.detail || 'Failed to fetch starmap.');
+      console.error('Fetch error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStarmap = async () => {
-      const response = await axios.get(`http://localhost:8000/starmap/generate?latitude=${latitude}&longitude=${longitude}`);
-      setStarmap(response.data);
-    };
-    fetchStarmap();
-  }, [latitude, longitude]);
+    if ((latitude !== undefined && longitude !== undefined) || city) {
+      fetchStarmap();
+    }
+  }, [latitude, longitude, city, token]);
 
-  return starmap;
+  return { starmap, loading, error, fetchStarmap };
 };
+
+export default useStarMap;

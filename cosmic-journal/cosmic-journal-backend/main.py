@@ -1,16 +1,31 @@
 from fastapi import FastAPI
-from member1_auth.api.auth_routes import auth_router
-from member2_journal.api.journal_routes import journal_router
-from member3_starmap.api.starmap_routes import starmap_router
-from member4_ui_utils.api.dependencies import ui_utils_router
+from app.api.auth import auth_router
+from app.api.starmap import starmap_router
+from app.api.journal import journal_router
+from app.api.geo import geo_router
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="Cosmic Journal API")
+app = FastAPI()
 
-app.include_router(auth_router, prefix="/auth", tags=["auth"])
-app.include_router(journal_router, prefix="/journal", tags=["journal"])
-app.include_router(starmap_router, prefix="/starmap", tags=["starmap"])
-app.include_router(ui_utils_router, prefix="/utils", tags=["utils"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+@app.middleware("http")
+async def add_corp_header(request, call_next):
+    response = await call_next(request)
+    response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
+    return response
+
+app.include_router(auth_router, prefix="/api")
+app.include_router(starmap_router, prefix="/api")
+app.include_router(journal_router, prefix="/api")
+app.include_router(geo_router, prefix="/api")
+
+@app.get("/")
+async def read_root():
+    return {"message": "Welcome to Cosmic Journal API", "docs": "/docs"}
