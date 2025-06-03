@@ -1,16 +1,44 @@
 # Python
 __pycache__/
-*.py[cod]
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
+*.sqlite3
+*.db
+*.env
+.env.*
 venv/
 ENV/
-pipenv/
-.venv/  # Added for Pipenv virtual environment
-*.env
-*.env.*
-.envrc
-Pipfile.lock # Added for Pipenv
+env/
+*.egg-info/
+dist/
+build/
+alembic/versions/*.pyc
+
+# VS Code
+.vscode/
+
+# Node.js / React / Vite
+node_modules/
+dist/
+build/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+
+# Alembic migration cache
+alembic/versions/*.pyc
+
+# Local settings
+*.local
+
+# Coverage/test
+htmlcov/
+.coverage
+.cache
+pytest_cache/
